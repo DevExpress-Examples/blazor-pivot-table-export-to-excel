@@ -10,12 +10,24 @@
     @DxResourceManager.RegisterTheme(FluentLight)
     @DxResourceManager.RegisterScripts()
     <link href=@AppendVersion("css/site.css") rel="stylesheet" />
-    <link href=@AppendVersion("BlazorBlankServer.styles.css") rel="stylesheet" />
+    <link href=@AppendVersion("PivotTable_Export_via_SpreadsheetDocument_API.styles.css") rel="stylesheet" />
     <HeadOutlet />
 </head>
 <body class="dxbl-theme-fluent">
     <Routes />
     <script src="_framework/blazor.web.js"></script>
+    <script>
+        async function downloadFileFromStream(fileName, contentStreamReference) {
+            const arrayBuffer = await contentStreamReference.arrayBuffer();
+            const blob = new Blob([arrayBuffer]);
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName ?? '';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    </script>
 </body>
 
 </html>

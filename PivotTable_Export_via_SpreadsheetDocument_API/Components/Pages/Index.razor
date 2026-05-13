@@ -1,0 +1,102 @@
+﻿@page "/"
+
+@rendermode InteractiveServer
+@inject Services.PivotTableExportService ExportService
+@inject IJSRuntime JS
+
+<PageTitle>Pivot Table</PageTitle>
+
+<h1>Pivot Table</h1>
+
+<DxButton Text="Export to Excel" Click="OnExportClick" CssClass="export-btn" />
+
+<DxPivotTable Data="@PivotTableData" @ref="pivotTable" CssClass="h-auto">
+    <Fields>
+        <DxPivotTableField Area="PivotTableArea.Row"
+                           Field="@nameof(SaleInfo.Region)"
+                           SortOrder="PivotTableSortOrder.Descending" />
+        <DxPivotTableField Area="PivotTableArea.Row"
+                           Field="@nameof(SaleInfo.Country)" />
+        <DxPivotTableField Area="PivotTableArea.Column"
+                           Field="@nameof(SaleInfo.Date)"
+                           GroupInterval="PivotTableGroupInterval.DateYear"
+                           Caption="Year" />
+        <DxPivotTableField Area="PivotTableArea.Column"
+                           Field="@nameof(SaleInfo.Date)"
+                           GroupInterval="PivotTableGroupInterval.DateQuarter"
+                           Caption="Quarter">
+            <ValueTemplate>
+                <span>@($"Q{context.Text}")</span>
+            </ValueTemplate>
+        </DxPivotTableField>
+        <DxPivotTableField Area="PivotTableArea.Data"
+                           Field="@nameof(SaleInfo.Amount)"
+                           SummaryType="PivotTableSummaryType.Sum"
+                           CellFormat="C0" />
+        <DxPivotTableField Area="PivotTableArea.Data"
+                           Field="@nameof(SaleInfo.OrderId)"
+                           SummaryType="PivotTableSummaryType.Count"
+                           Caption="Count" />
+    </Fields>
+</DxPivotTable>
+
+@code {
+    IPivotTable pivotTable { get; set; } = null!;
+    SaleInfo[]? PivotTableData;
+
+    protected override void OnInitialized() {
+        var years = new[] { DateTime.Now.Year - 3, DateTime.Now.Year - 2, DateTime.Now.Year - 1 };
+        var quarters = new[] { (1, 3), (4, 6), (7, 9), (10, 12) };
+
+        int id = 1;
+        PivotTableData = Regions
+            .SelectMany(region => region.Value
+                .SelectMany(country => years
+                    .SelectMany(year => quarters
+                        .Select(q => new SaleInfo(
+                            id++,
+                            region.Key,
+                            country,
+                            Random.Shared.Next(500, 10000),
+                            new DateTime(year, Random.Shared.Next(q.Item1, q.Item2 + 1), Random.Shared.Next(1, 28))
+                        )))))
+                    .ToArray();
+    }
+
+    async Task OnExportClick() {
+        if (PivotTableData is null)
+            return;
+
+        var layout = pivotTable.SaveLayout();
+
+        var exportConfig = new Services.PivotTableExportConfig {
+            DataFieldConfigs = new() {
+                ["OrderId"] = new Services.DataFieldConfig {
+                    SummaryFunction = DevExpress.Spreadsheet.PivotDataConsolidationFunction.Count,
+                    Caption = "Count"
+                }
+            },
+            ColumnFieldGroupings = new() {
+                ["Date"] = new Services.ColumnFieldGroupingConfig {
+                    GroupBy = DevExpress.Spreadsheet.PivotFieldGroupByType.Years | DevExpress.Spreadsheet.PivotFieldGroupByType.Quarters
+                }
+            }
+        };
+
+        var fileBytes = ExportService.ExportToExcel(PivotTableData, layout, exportConfig);
+
+        using var stream = new MemoryStream(fileBytes);
+        using var streamRef = new DotNetStreamReference(stream);
+        await JS.InvokeVoidAsync("downloadFileFromStream", "PivotTableExport.xlsx", streamRef);
+    }
+
+    public static readonly Dictionary<string, string[]> Regions = new() {
+        ["Africa"] = ["South Africa", "Egypt"],
+        ["Asia"] = ["UAE", "Japan", "India"],
+        ["Europe"] = ["United Kingdom", "Germany", "Spain"],
+        ["North America"] = ["USA", "Canada", "Mexico"],
+        ["South America"] = ["Brazil", "Argentina", "Chile"]
+    };
+
+    public record SaleInfo(int OrderId, string Region, string Country, int Amount, DateTime Date);
+}

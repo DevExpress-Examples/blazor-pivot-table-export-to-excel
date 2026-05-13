@@ -1,10 +1,13 @@
-﻿using BlazorBlankServer.Components;
+﻿using PivotTable_Export_via_SpreadsheetDocument_API.Components;
+using PivotTable_Export_via_SpreadsheetDocument_API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddScoped<PivotTableExportService>();
 
 builder.Services.AddDevExpressBlazor(options => {
     options.SizeMode = DevExpress.Blazor.SizeMode.Medium;
