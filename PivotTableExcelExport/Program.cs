@@ -1,5 +1,5 @@
-﻿using PivotTable_Export_via_SpreadsheetDocument_API.Components;
-using PivotTable_Export_via_SpreadsheetDocument_API.Services;
+﻿using PivotTableExcelExport.Components;
+using PivotTableExcelExport.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,7 +1,7 @@
 ﻿using DevExpress.Blazor.PivotTable;
 using DevExpress.Spreadsheet;
 
-namespace PivotTable_Export_via_SpreadsheetDocument_API.Services;
+namespace PivotTableExcelExport.Services;
 
 public class PivotTableExportService {
     public byte[] ExportToExcel<T>(IEnumerable<T> data, PivotTablePersistentLayout layout, PivotTableExportConfig? config = null) {
