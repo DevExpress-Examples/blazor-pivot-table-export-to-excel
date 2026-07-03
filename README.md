@@ -1,6 +1,6 @@
 # Blazor Pivot Table - Export Data to Excel Using Spreadsheet Document APIs
 
-This example exports data from the [DevExpress Blazor Pivot Table](https://docs.devexpress.com/Blazor/405245/components/pivot-table) component to an Excel workbook. Once an export operation is complete, the application downloads the generated file directly in the browser.
+This example exports data from the [DevExpress Blazor Pivot Table](https://docs.devexpress.com/Blazor/405245/components/pivot-table) component to an Excel workbook. Once an export operation is complete, the application downloads the generated file.
 
 > **Note**: This example uses the [DevExpress Office File API](https://docs.devexpress.com/Blazor/404576/components/office-file-api) - a standalone library that allows you to read/write documents, spreadsheets, presentations, and PDF files. The DevExpress Office File API is included in the following subscriptions: [DevExpress Office File API Subscription](https://www.devexpress.com/products/net/office-file-api/) or [DevExpress Universal Subscription](https://www.devexpress.com/subscriptions/universal.xml).
 
@@ -51,13 +51,13 @@ Add a [DevExpress Blazor Pivot Table](https://docs.devexpress.com/Blazor/405245/
 
 ### Add an Export Button
 
-Add a [DevExpress Blazor Button](https://docs.devexpress.com/Blazor/405052/components/utility-controls/button) to the page. Perform the following actions in the button's Click event handler:
+Add a [DevExpress Blazor Button](https://docs.devexpress.com/Blazor/405052/components/utility-controls/button) to the page. Do the following in the button Click event handler:
 
 1. Obtain the dataset bound to our Blazor Pivot Table. 
-1. Call the [DxPivotTable.SaveLayout](https://docs.devexpress.com/Blazor/DevExpress.Blazor.PivotTable.DxPivotTable.SaveLayout) method to obtain persisted layout information (a [PivotTablePersistentLayout](https://docs.devexpress.com/Blazor/DevExpress.Blazor.PivotTable.PivotTablePersistentLayout) object).
+1. Call the [DxPivotTable.SaveLayout](https://docs.devexpress.com/Blazor/DevExpress.Blazor.PivotTable.DxPivotTable.SaveLayout) method to retrieve persisted layout information (a [PivotTablePersistentLayout](https://docs.devexpress.com/Blazor/DevExpress.Blazor.PivotTable.PivotTablePersistentLayout) object).
 1. Create a `PivotTableExportConfig` object to store custom export options.
 1. Pass dataset, layout information, and export options to the export engine.
-1. Once the engine returns a generated Excel document, download it to the user's machine.
+1. Once the export engine returns a generated Excel document, download it to the user machine.
 
 ```Razor
 <DxButton Text="Export to Excel" Click="OnExportClick" />
@@ -108,7 +108,7 @@ To export our Blazor Pivot Table data to Excel, you must:
     }
     ```
 
-1. Iterate through dataset records and populate worksheet cells with corresponding values.
+1. Iterate through dataset records and populate worksheet cells with associated values.
 
     ```cs
     var dataList = data.ToList();
@@ -132,7 +132,7 @@ To export our Blazor Pivot Table data to Excel, you must:
     }
     ```
 
-1. Add a new worksheet and create a [Spreadsheet Pivot Table](https://docs.devexpress.com/OfficeFileAPI/118492/spreadsheet-document-api/pivot-tables) based on the data listed on the first worksheet.
+1. Add a new worksheet and create a [Spreadsheet Pivot Table](https://docs.devexpress.com/OfficeFileAPI/118492/spreadsheet-document-api/pivot-tables) based on data listed in the first worksheet.
 
     ```cs
     int lastRow = dataList.Count;
@@ -144,7 +144,7 @@ To export our Blazor Pivot Table data to Excel, you must:
     var pivotTable = pivotSheet.PivotTables.Add(sourceRange, pivotSheet["A1"]);
     ```
 
-1. To recreate Blazor Pivot Table layout, iterate through [persistent layout fields](https://docs.devexpress.com/Blazor/DevExpress.Blazor.PivotTable.PivotTablePersistentLayout.Fields) and add them to the corresponding Spreadsheet Pivot Table areas.
+1. To recreate the Blazor Pivot Table layout, iterate through [persistent layout fields](https://docs.devexpress.com/Blazor/DevExpress.Blazor.PivotTable.PivotTablePersistentLayout.Fields) and add them to the corresponding Spreadsheet Pivot Table areas.
 
     ```cs
     var layoutFields = layout.Fields
