@@ -56,7 +56,7 @@ Add a [DevExpress Blazor Button](https://docs.devexpress.com/Blazor/405052/compo
 1. Obtain the dataset bound to our Blazor Pivot Table. 
 1. Call the [DxPivotTable.SaveLayout](https://docs.devexpress.com/Blazor/DevExpress.Blazor.PivotTable.DxPivotTable.SaveLayout) method to retrieve persisted layout information (a [PivotTablePersistentLayout](https://docs.devexpress.com/Blazor/DevExpress.Blazor.PivotTable.PivotTablePersistentLayout) object).
 1. Create a `PivotTableExportConfig` object to store custom export options.
-1. Pass dataset, layout information, and export options to the export engine.
+1. Pass dataset, layout information, and export options as parameters to the `ExportToExcel` method.
 1. Once the export engine returns a generated Excel document, download it to the user machine.
 
 ```Razor
