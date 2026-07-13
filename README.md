@@ -91,7 +91,7 @@ Add a [DevExpress Blazor Button](https://docs.devexpress.com/Blazor/405052/compo
 
 ### Implement an Export Engine
 
-To export our Blazor Pivot Table data to Excel, you must:
+To export Blazor Pivot Table data to Excel, you must:
 
 1. Create a [Workbook](https://docs.devexpress.com/OfficeFileAPI/DevExpress.Spreadsheet.Workbook) instance and access the first worksheet.
 
@@ -144,7 +144,7 @@ To export our Blazor Pivot Table data to Excel, you must:
     var pivotTable = pivotSheet.PivotTables.Add(sourceRange, pivotSheet["A1"]);
     ```
 
-1. To recreate the Blazor Pivot Table layout, iterate through [persistent layout fields](https://docs.devexpress.com/Blazor/DevExpress.Blazor.PivotTable.PivotTablePersistentLayout.Fields) and add them to the corresponding Spreadsheet Pivot Table areas.
+1. To recreate our Blazor Pivot Table's layout, iterate through [persistent layout fields](https://docs.devexpress.com/Blazor/DevExpress.Blazor.PivotTable.PivotTablePersistentLayout.Fields) and add them to corresponding Spreadsheet Pivot Table areas.
 
     ```cs
     var layoutFields = layout.Fields
