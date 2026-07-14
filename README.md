@@ -217,8 +217,8 @@ To export Blazor Pivot Table data to Excel, you must:
 
 ## Files to Review
 
-* [Index.razor](./Pages/Index.razor)
-* [PivotTableExportService.cs](./Services/PivotTableExportService.cs)
+* [Index.razor](./PivotTableExcelExport/Components/Pages/Index.razor)
+* [PivotTableExportService.cs](./PivotTableExcelExport/Services/PivotTableExportService.cs)
 
 ## Documentation
 
